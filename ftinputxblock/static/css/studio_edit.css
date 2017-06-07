@@ -1,0 +1,5 @@
+textarea#question {
+    width: 100%;
+    resize: none;
+    overflow: auto;
+}
