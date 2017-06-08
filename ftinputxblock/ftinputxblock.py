@@ -26,7 +26,7 @@ class FtInputXBlock(XBlock):
                           scope=Scope.settings)
 
     user_input = String(display_name="User input",
-                        default="Type your answer here...",
+                        default="",
                         scope=Scope.user_state)
 
     question = String(display_name="Question",

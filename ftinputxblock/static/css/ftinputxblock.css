@@ -5,6 +5,7 @@
     border-bottom: 1px solid #F76B1C !important;
     background: none;
     box-shadow: none;
+    resize: none;
 }
 
 #user_input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -31,6 +32,18 @@
     outline: none;
 }
 
+.feedback-message {
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+.feedback-message.success {
+    color: #99c221;
+}
+
+.feedback-message.error {
+    color: red;
+}
 .ft-question {
     font-style: italic;
     white-space: pre-line;
