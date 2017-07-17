@@ -15,7 +15,8 @@ function FtInputXBlock(runtime, element) {
                 data: JSON.stringify({'user_input': data})
             })
             .done(function (response) {
-                messageSavedFeedback(response['user_input'])
+                messageSavedFeedback(response['user_input']);
+                disableSaveButton();
             })
             .fail(function () {
                 $element.find('.feedback-message')
@@ -31,6 +32,11 @@ function FtInputXBlock(runtime, element) {
         $element.find('.feedback-message')
             .addClass('success')
             .text('Your changes have been saved.');
+    }
+
+    function disableSaveButton() {
+        var $saveButton = $element.find('#save-answer');
+        $saveButton.addClass('disabled');
     }
 
     /* auto expand textarea in regarding amount of the text */
