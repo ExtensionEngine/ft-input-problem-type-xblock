@@ -16,7 +16,7 @@ function FtInputXBlock(runtime, element) {
             })
             .done(function (response) {
                 messageSavedFeedback(response['user_input']);
-                disableSaveButton();
+                $element.find('#save-answer').addClass('disabled');
             })
             .fail(function () {
                 $element.find('.feedback-message')
@@ -25,18 +25,33 @@ function FtInputXBlock(runtime, element) {
             });
     });
 
+    // FEATURE: save & restore input state
+    // we preserve input state in window variable,
+    // so when you navigate through course units in courseware page,
+    // your XBlock updates from the state which it had on page load
+
+    // restore input value
+    $element.find('textarea').ready(function(){
+        if (window.xblocksData && window.xblocksData[handlerUrl]) {
+            $element.find('textarea').val(window.xblocksData[handlerUrl]);
+        }
+    });
+
+    // save input value
+    $element.find('textarea').on('keyup', function() {
+        if (!window.xblocksData) {
+            window.xblocksData = {};
+        }
+
+        window.xblocksData[handlerUrl] = $(this).val();
+    });
+
     function messageSavedFeedback(data) {
-        var $input = $element.find('#user_input');
-        $input.val(data);
+        $element.find('#user_input').val(data);
 
         $element.find('.feedback-message')
             .addClass('success')
             .text('Your changes have been saved.');
-    }
-
-    function disableSaveButton() {
-        var $saveButton = $element.find('#save-answer');
-        $saveButton.addClass('disabled');
     }
 
     /* auto expand textarea in regarding amount of the text */
