@@ -4,7 +4,6 @@ function FtInputXBlock(runtime, element) {
     var handlerUrl = runtime.handlerUrl(element, 'update_answer');
 
     function saveUserResponse() {
-        console.log('saveing');
         var $input = $element.find('#user_input');
         var data = $input.val();
 
