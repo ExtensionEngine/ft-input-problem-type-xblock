@@ -3,17 +3,18 @@ function FtInputXBlock(runtime, element) {
     var $element = $(element);
     var handlerUrl = runtime.handlerUrl(element, 'update_answer');
 
-    $('#save-answer', element).click(function (eventObject) {
+    function saveUserResponse() {
+        console.log('saveing');
         var $input = $element.find('#user_input');
         var data = $input.val();
 
         $element.find('.feedback-message').text('saving...');
 
         $.ajax({
-                type: "POST",
-                url: handlerUrl,
-                data: JSON.stringify({'user_input': data})
-            })
+            type: "POST",
+            url: handlerUrl,
+            data: JSON.stringify({ 'user_input': data })
+        })
             .done(function (response) {
                 messageSavedFeedback(response['user_input']);
                 $element.find('#save-answer').addClass('disabled');
@@ -23,7 +24,9 @@ function FtInputXBlock(runtime, element) {
                     .addClass('error')
                     .text('An error occurred while saving. Please, try again later.');
             });
-    });
+    }
+
+    $('#save-answer', element).click(saveUserResponse);
 
     // FEATURE: save & restore input state
     // we preserve input state in window variable,
@@ -45,6 +48,18 @@ function FtInputXBlock(runtime, element) {
 
         window.xblocksData[handlerUrl] = $(this).val();
     });
+
+    // autosave feature
+    var autosaveTimeoutId = undefined;
+
+    $element.find('textarea').on('keyup', function(event) {
+        if(autosaveTimeoutId) {
+            clearTimeout(autosaveTimeoutId);
+        }
+
+        autosaveTimeoutId = setTimeout(saveUserResponse, 5000);
+    });
+
 
     function messageSavedFeedback(data) {
         $element.find('#user_input').val(data);
