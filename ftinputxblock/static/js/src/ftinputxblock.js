@@ -5,8 +5,10 @@ function FtInputXBlock(runtime, element) {
 
     function saveUserResponse() {
         var $input = $element.find('#user_input');
+        var $button = $element.find('#save-answer');
         var data = $input.val();
 
+        $button.addClass('disabled');
         $element.find('.feedback-message').text('saving...');
 
         $.ajax({
@@ -16,12 +18,13 @@ function FtInputXBlock(runtime, element) {
         })
             .done(function (response) {
                 messageSavedFeedback(response['user_input']);
-                $element.find('#save-answer').addClass('disabled');
+                $button.removeClass('disabled');
             })
             .fail(function () {
                 $element.find('.feedback-message')
-                    .addClass('error')
-                    .text('An error occurred while saving. Please, try again later.');
+                        .addClass('error')
+                        .text('An error occurred while saving. Please, try again later.');
+                $button.removeClass('disabled');
             });
     }
 
